@@ -1,46 +1,22 @@
-<?php 
-
-
-class UserModel{
-    private PDO $conn;
-
-    function __construct()
-    {
-        $this->conn = new PDO("mysql:host=127.0.0.1;dbname=snapcat","root","root");
-        $statment = $this->conn->prepare("CREATE TABLE IF NOT EXISTS User (id INT AUTO_INCREMENT PRIMARY KEY,name TEXT,password TEXT);");
-        $result = $statment->execute();
-    }
-
-    public function signin(string $email, string $password) : bool {
-        try {
-            $statment = $this->conn->prepare("INSERT INTO User (name,password) VALUES (?,?)");
-            $result = $statment->execute([
-                $email,
-                $password
-            ]);
-            return $result;
-        } catch (\Throwable $th) {
-            //throw $th;
-            $log_file = fopen("log","a+");
-            fwrite($log_file,$th->getMessage()."\n");
-            return false;
-        }
-    }
+<?php
+session_start();
+// Test auth
+if(isset($_SESSION["user_id"]) == false){
+    header("Location: login.php");
 }
 
-function main(){
-    echo "Hello\n";
-    try {
-        $userModel = new UserModel();
-        $isSignin = $userModel->signin("massi@email.com","1234");
-        var_dump($isSignin);
-    } catch (\Throwable $th) {
-        throw $th;
-    }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="login.php">Se connecter</a>
+    <h1>VOD</h1>
+    <a href="logout.php">Déconnexion</a>
 
-}
-main();
-
-
-?> 
-
+</body>
+</html>
