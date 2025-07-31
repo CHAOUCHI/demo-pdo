@@ -30,6 +30,7 @@ if (
         <input type="password" name="password">
         <button>Se connecter</button>
     </form>
+    <a href="login.php">Se connecter</a>
     <?php if($isSuccess):?>
         <p>Création du compte réussi.</p>
     <?php endif;?>

@@ -26,6 +26,7 @@ if (
     ) {
         $_SESSION["user_id"] = $user["id"];
         header("Location: index.php");
+        exit();
     } else {
         $error = "Login incorrect";
     }
@@ -47,6 +48,7 @@ if (
         <input type="password" name="password">
         <button>Se connecter</button>
     </form>
+    <a href="inscription.php">Se créer un compte</a>
     <?php if ($error != null): ?>
         <?= $error ?>
     <?php endif; ?>

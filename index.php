@@ -3,7 +3,16 @@ session_start();
 // Test auth
 if(isset($_SESSION["user_id"]) == false){
     header("Location: login.php");
+    exit();
 }
+
+// Voir toutes les taches DE L'UTILISATEUR
+    $database = new PDO("mysql:host=127.0.0.1;dbname=app-database", "root", "root");
+    $request = $database->prepare("SELECT * FROM Task WHERE user_id=?");
+    $request->execute([
+        $_SESSION["user_id"]
+    ]);
+    $tasks = $request->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -15,8 +24,15 @@ if(isset($_SESSION["user_id"]) == false){
 </head>
 <body>
     <a href="login.php">Se connecter</a>
-    <h1>VOD</h1>
     <a href="logout.php">Déconnexion</a>
+    <h1>TaskList</h1>
+    <a href="add-task.php">Ajouter une tache</a>
+
+    <?php foreach($tasks as $task):?>
+        <div class="task">
+            <p class="task_title"><?= $task["title"] ?></p>
+        </div>
+    <?php endforeach; ?>
 
 </body>
 </html>
